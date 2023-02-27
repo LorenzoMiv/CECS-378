@@ -1,0 +1,181 @@
+Symmetric Encryption Principles: 
+	- Cryptography systems are generically classified along three independent dimensions: 
+		1) Type of operations used for transforming plaintext to ciphertext
+		2) Number of keys used 
+			- Symmetric: both sender and receiver are using the same key
+			- Asymmetric: sender and receiver use a different key
+		3) way in which the plaintext is processed
+			- block cipher: processes the input one block of elements at a time
+			- stream cipher: processes the input elements continuously, producing output one element at a time
+	- Cryptanalysis: attempt to discover the plaintext or key
+	- Types of Attacks on Encrypted Messages: 
+		  Type of Attack		Known to Cryptanalyst
+		1) Ciphertext only		- Encryption algorithm
+						- Ciphertext to be decoded
+		2) Known Plaintext		- Encryption algorithm
+						- Ciphertext to be decoded
+						- One or more plaintext-ciphertext pairs formed with the secret key 
+		3) Chosen Plaintext		- Encryption Algorithm 
+						- Ciphertext to be decoded 
+						- Plaintext message chosen by cryptanalyst, together with its corresponding ciphertext generated with the secret key
+		4) Chosen Ciphertext		- Encryption algorithm 
+						- Ciphertext to be decoded 
+						- Purported ciphertext chosen by cryptanalyst, together with its corresponding decrypted plaintext generated with secret key 
+		5) Chosen text			- Encryption Algorithm
+						- Ciphertext to be decoded 
+						- Plaintext message chosen by cryptanalyst, tougher with tis corresponding ciphertext generated with a secret key
+						- Purported ciphertext chosen by cryptanalyst, together with its corresponding decrypted plaintext generated with the secret key 
+	- Feistel Cipher Structure: 
+		- In general a block cipher consists of a sequence of rounds, with each performing substitutions and permutations conditioned by a secret key value 
+		- Symmetric block ciphers depend on: 
+			1) Block Size: Larger block sizes mean greater security but reduced encryption/decryption speed. A 128 bit block is a reasonable tradeoff 
+			2) Key Size: Larger key size means greater security but may decrease encryption/ decryption speed (most common is 128 bits)
+			3) Number of Rounds: A single round offers inadequate security but multiple rounds offer increasing security (16 is typical) 
+			4) Subway Generation: Greater complexity in this algorithm should lead to greater difficulty
+			5) Round Function: greater complexity means greater resistance 
+			6) Fast software encryption/decryption: speed is a concern
+			7) Ease of analysis: If the algorithm can be concisely and clearly explained, it is easier to analyze the algorithm for cryptanalytic vulnerabilities
+	- Data Encryption Standard (DES): 
+		- Three most important symmetric block ciphers: 
+			1) Data Encryption Standard (DES):
+				- 64 bit plaintext and the key is 56 bits in length
+				- 16 rounds of processing 
+				- from original 56-bit key, 16 subkeys are generated, one with each round 
+				- Decryption is the same but you use the keys in reverse
+			3) Triple DES (3DES)
+				- Uses three keys and three executions of DES algorithm
+				- C = E(K3, D(K2, E(K1, p))) where C = ciphertext, p = plaintext, E(K, X) = DES of X using key, KD(K, Y) = DES of Y using key K
+				- there is no cryptographic significance to the use of decryption for the second stage of 3DES 
+				-Guidlines for 3DES: 
+					- 3DES is a FIPS approved symmetric encryption algorithm device 
+					- Original DES, is permitted under the standard for legacy systems only, new should support 3DES 
+					- Government orgs with legacy DES systems are encouraged to transition to 3DES 
+	- Advanced Encryption Standard (AES): 
+		- AES uses a block length of 128 bits and a key length that can be 128, 192, or 256 bits. 
+		- block is depicted as a square matrix of bytes and copied into a state array, which is modified at each state of encryption
+		- the stat is copied to an output matrix, and then the key is expanded into an array of key schedule words
+		- Ordering is done by bytes within a column 
+			- first 4 bytes of a 128-bit  plaintext input to the encryption cipher occupy the first column of the IN matrix
+		- Does not use Fiestel structure
+		- Key that is provided as input is expanded into an array of 44 32-bit words, w[I]. Four distinct words serve as a round key for each round
+		- Four different stages are used: 
+			1) Substitute bytes: Use a table referred to an S-box, to perform a byte-by-byte substitution of the block 
+			2) Shift rows: a simple permutation that is performed row by row
+			3) Mix columns: A substitution that alters each byte in a column as a function of all the bytes in the column 
+			4) Add round Key: a simple bitwise xor of the current block with a portion of the expanded key 
+			5) only the round key stage makes use of the key 
+			6) Add Round key stage by itself is not formidable
+			7) each stage is easily reversible
+			8) The decryption algorithm is not identical to the encryption algorithm 
+			9) States are the same for encryption and decryption
+			10) final round consists of three stages 
+
+	- Algorithm Details (AES Details): 
+		- Substitute Bytes Transformation: 
+			- forward substitute byte, is a table lookup
+			- 16x16 matrix (S-box) containing all possible permutations for 256 8-bit values 
+			- Each byte of State is mapped into a new byte by: 
+				- leftmost 4 bits of the byte are the row and rightmost 4 bits are the column 
+				- ex: hexa {95} refers to row 9 column 5 which contains {2A}, so {95} is mapped to value {2A}
+		- Shift Row Transformation: 
+			- first row of State is not altered, second row is 1-byte circular left, third is 2-byte circular left, fourth is 3-byte circular left shift
+			87|F2|4D|97		87|F2|4D|97
+			EC|6E|4C|90	=>	6E|4C|90|EC
+			4A|C3|46|E7		46|E7|4A|C3
+			8C|D8|95|A6		A6|8C|D8|95
+		- Mix Column Transformation: 
+			- Each byte of a column is mapped into a new value that is a function of all 4 bytes in the column 
+			- mapping is designed to provide a good mixing among the bytes of each column 
+			87|F2|4D|97		47|40|A3|4C
+			6E|4C|90|EC	=>	37|D4|70|9F
+			46|E7|4A|C3		94|E4|3A|42
+			A6|8C|D8|95		ED|A5|A6|BC
+		- Add Round Key Transformation: 
+			- the 128 bit of State are bitwise XORed with the 128bits of the round key
+			47|40|A3|4C		AC|19|28|57		EB|59|8B|1B
+			37|D4|70|9F	XOR 	77|FA|D1|5C	=	40|2E|A1|C3
+			94|E4|3A|42		66|DC|29|00		F2|38|13|42
+			ED|A5|A6|BC		ED|A5|A6|BC		1E|84|E7|D2
+			- as simple as possible and affects every bit of State
+		- AES Key Expansion: 
+			- takes an input 4-word (16 byte) key and produces a linear array of 44 words (156 bytes) 
+			- Key is copied into the first four words of the expanded key 
+	- Stream Ciphers and RC4: 
+		- Processes the input elements continuously, producing output one element at a time
+		- Stream Cipher Structure: 
+			- Encrypts one byte at a time 
+			- A key is input to a pseudorandom bit generator that produces a stream of 8-bit numbers giving a key stream
+			- key stream is combined 1 byte at a time with the plaintext stream using the bitwise exclusive or (XOR)
+				11001100 plaintext
+				01101100 keysteam 
+				10100000 ciphertext 
+			- primary advantage is that they are almost always faster and use far less code 
+	- RC4 Algorithm:
+		- Variable key size stream cipher with byte oriented operations
+		- based on the use of a random permutation 
+		- A variable length key is use to initialize a 256-byte state vector S
+		- S contains a permutation of all 8-bit numbers from 0 through 255
+		- Initializing S:
+			- S entries are set to the values 0 to 255 respective to their element 
+			- A temp vector, T, if the length os the key is 256 then K is transferred to T
+			- if k is less than 256, the key length bytes in T are copied to K and K is repeated as many times necessary until T is filled out 
+			- Use T to produce the initial permutation of S 
+		- Stream Generation: 
+			- Involves cycling through all the elements of S[I] and for each S[I], swapping S[I] with another byte in S
+	- Cipher Block Modes of Operation: 
+		Mode		| Description							| Typical Application
+		Electronic Code | Each block of 64 plaintext bits is encoded independently	| Secure transmission of single values
+		Book (ECB)	| using the same key						|
+				|								|
+		Cipher Block	| The input to the encryption algorithm is the XOR of the next  | General-purpose block-oriented transmission 
+		Chaining (CBC)	| 64 bits of plaintext and the preceding 64 bits of ciphertext	| Authentication
+				| 								|
+				|								|
+		Cipher Feedback	| Input is processed s bits at a time. Preceding ciphertext is 	| General-purpose stream-oriented transmission
+		(CFB)		| used as input to the encryption algorithm to produce 		| Authentication
+				| pseudorandom output, which is XORed with plaintext to produce	|
+				| next unit of ciphertext					|
+				|								|
+		Output Feedback	| Similar to CFB, except that the input to the encryption 	| Stream-oriented transmission over noisy channel
+		(OFB)		| algorithm is the preceding DES output				|
+				|								|
+		Count (CTR)	| Each block of plaintext is XORed with an encrypted counter. 	| General-purpose block-oriented transmission
+				| The counter is incremented for each subsequent block.		| Useful for high-speed requirements
+	- Electronic Codebook Mode (ECB): 
+		- plaintext is handled b bits at a time and each block of plaintext is encrypted using the same key
+		- there is a unique ciphertext for every b-bit block of plaintext 
+		- like a gigantic codebook in which there is an entry for every possible b-bit plaintext pattern showing its corresponding ciphertext 
+		- ECB is not good for lengthy messages because of repetition 
+	- Cipher Block Chaining Mode (CBC): 
+		- The input to the encryption algorithm is the XOR of the current plaintext block and the preceding ciphertext block; the same key is used for each block
+		- The input to the encryption function for each plaintext block bears no fixed relationship to the plaintext block 
+	- Cipher Feedback Mode (CFB): 
+		- Allows for a block cipher to be converted to a stream cipher 
+		- Input to the encryption function is a b-bit shift register that is initially set to some initialization vector
+		- leftmost s bits of the output of the encryption function are XORed with the first unit of plaintext to produce the first unit of ciphertext
+		- contents of shift register are shifted left by s bits and c1 is placed in the rightmost s bits of the shift register 
+	- Counter Mode: 
+		- A counter to the plaintext block size is used
+		- counter value must be different for each plaintext block that is encrypted
+		- counter is initialized to some value and then incremented by 1 for each subsequent block (mod 2b)
+		- counter is encrypted then XORed with the plaintext block to produce the ciphertext block
+		- Advantages: 
+			- Hardware efficiency: can be done in parallel on multiple blocks of plaintext or ciphertext. Throughput is only limited by the amount of parallelism achieved
+			- Preprocessing: if sufficient memory is available and security is maintained, preprocessing can be used to prepare the output of the encryption boxes that feed into the XOR functions
+			- Random Access: ith block of plaintext or ciphertext can be processed in random access
+			- Simplicity: Unlike ECB and CBC, CTR requires only implementation of the encryption algorithm and not the decryption algorithm
+	- Key Distribution: 
+		- For two parties A and B: 
+			1) A key could be selected by A and physically delivered to B
+			2) A third party could select the key and physically deliver it to A and B
+			3) If A and B have previously and recently used a key. One party could transmit the new key to the other, encrypted using the old key 
+			4) If A and B each have an encrypted connection to a third party C, C could deliver a key on the encrypted links to A and B
+		- Session Key: When two end systems wish to communicate, they establish a local connection
+		- Permanent Key: A permanent key is a key used between entitles for the purpose of distributing session keys 
+		- Key Distribution center: determines which systems are allowed to communicate with each other
+		- Security Service Module (SSM): This module, which may consist of functionality at one protocol layer, performs and end-to-end encryption and obtains session keys on behalf of users
+		- Steps to distributing a key: 
+			1) Hosts transmit a connection-request packet to connect
+			2) SSM saves the packet and applies to KDC for permission to establish connection
+			3) Connection between SSM and KDC uses master key only known to them, if verified a unique permanent key is given to each SSM 
+			4) SSM can now release connection request packet, and connection is set up between the two end systems 
