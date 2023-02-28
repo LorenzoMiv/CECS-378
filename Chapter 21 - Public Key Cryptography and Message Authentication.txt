@@ -1,0 +1,114 @@
+- Secure Hash functions:
+	- Simple Hash Functions:
+		- General Principles: 
+			- input is viewed as a sequence of n-bit blocks 
+			- input is processed one block at a time in an iterative fashion to produce an n-bit hash function
+			Bit 1		Bit 2		...		Bit n
+	Block 1	b_11		b_21				b_n1
+	Block 2	b_12		b_22		...		b_n2
+			  .		  .				  .
+			  .		  .				  .
+			  .		  .				  .
+	Block m	b_1m		b_2m		...		b_nm
+	Hash Code	C_1		C_2				C_n
+
+		- Improving the hash function: 
+			1) Initially set the n-but hash value to zero
+			2) Process each successive n-bit block of data as follows: 
+				a. Rotate the current hash value to the left by 1 bit
+				b. XOR the block into the hash value 
+			- has the effect of randomizing  
+	- The SHA Secure Hash Function 
+		- Hash lengths may be 256, 384, and 512
+						SHA-1		SHA-2		SHA-256	SHA-384	SHA-512
+		Message Size		< 264 (bits) <264		< 264		< 2128	< 2128
+		Word Size			32		 32		32		64		64
+		Block Size			512		 512		512		1024		1024
+		Message digest size	160		 224		256		384		512
+		Number of steps		80		 64		64		80		80
+		Security			80		 112		128		192		256
+	- Message Digest Generation Using SHA-512:
+		Step 1) Append padding bits: padding is always added, regardless of the size. Padding is done by
+			  using a single bit followed by the necessary number of 0-bits
+		Step 2) Append Length: Block is treated as an unsigned 128-bit int and contains the original length
+		Step 3) Initialize hash buffer:  A 512-bit buffer is used to hold intermediate and final results of the hash function.
+			  Buffer can be represented as eight 64-bit registers.
+		Step 4) Process Message in 1024-bit (128-word) blocks: 80 rounds of processing for algorithm  
+		- Each round takes 512-bit buffer as input and updates contents
+		- Each round uses a 64-bit value, derived from the 1024-bit block
+		- Each round uses an additive constant, Kt where t is the round 0-79
+		Step 5) Output: after all N 1024-bit blocks have been processed, output from the Nth stage is the 512-bit message digest
+	- SHA-3: 
+		- SHA-2 uses the same mathematical formulas as it's predecessors and can be a problem
+		- Basic requirements that need to satisfy any candidate for SHA-3:
+			1) Must be possible to replace SHA-2 with SHA-3 in any application by a simple drop in solution
+			2) SHA-3 must preseve the online nature of SHA-2. 
+- HMAC:
+	- Motivations for using MAC cryptographic hash code: 
+		- Cryptographic hash functions generally exeucte faster in software than conventional encryption algorithms such as DES. 
+		- Library code for cryptographic hash functions is widely available
+	- HMAC Design Objectives: 
+		- to use, without modifications, available hash functions - in particular, hash functions that perform well in software, and for which code is freely and widely available
+		- to allow for easy rerplaceability of the embedded hash function in case faster or more secure hash functions are found or required
+		- to preserve the original performance of the hash function without incurring a significant degradation
+		- to use and handle keys in a simple way
+		- to have a well-understood cryptographic analysis of the strength of the authentication mechanism based on reasonable 
+		  assumptions on the embedded hash function 
+	- HMAC algorithm: 
+		1) Append zeros to the left end of K to create a b-bit K+ (if K is 160 bits and b = 512, then K will be appended with 44 zero bytes 0x00)
+		2) XOR (bitwise exlusive-OR) K+ with ipad to produce the b-bit block Si
+		3) Append M to Si
+		4) Apply H to the stream generrated in step 3
+		5) XOR K+ with opad to produce the b-bit block S0
+		6) Append the hash result from step 4 to S0
+		7) Apply H to the stream generated in step 6 and output the result
+- Authenticated Encryption:
+	- encryption systems that simultaneously protect confidentiality and authenticity of communications, 
+	  by providing both message encryption and message authentication
+	- OCB (Offset CodeBook):
+		- Each block is encrypted independently, so that it is possible to perform all m encryption's 
+		  simultaneously
+		- OCB eliminates the redundancy problem in ECB by using an offset Z[I] for each block M[I], 
+		  such that Z[I] is unique
+			- Offset is XORed with the plaintext and XORed again with the encrypted output 
+		- Two identical blocks will produce two different cipher texts 
+- The RSA Public-Key Encryption Algorithm: 
+	- Description of the Algorithm: 
+		- Block cipher in which the plaintext and ciphertext are integers between 0 and n-1 for some n
+		- For this to work with public-key encryption it must have: C = Me mod n, M = C d mod n = (Me)d mod n = Med mod n
+			1) It is possible to find values of e, d, n such that M e d mod n = M for all M < n
+			2) It is relatively easy to calculate Me and Cd for all values of M < n
+			3) It is infeasible to determine d given e and n 
+		- Algorithm Steps: 
+			- Key Generation - 
+			1) Select p, q				p and q are both prime where p != q
+			2) calculate n = p * q
+			3) calculate phi(n) = (p-1)(q-1)
+			4) select integer e			gcd(phi(n), e) = 1; 1 < e < phi(n)
+			5) calculate d				d e mod phi(n) = 1
+			6) Public Key				KU = {e, n}
+			7) Private Key				KR = {d, n}
+			- Encryption - 
+			1) plaintext: 				M < n 
+			2) ciphertext: 				C = M e (mod n)
+			- Decryption - 
+			1) ciphertext				C
+			2) plaintext				M = C d (mod n)
+		- example: 
+		- User A has published a public key and user B wishes to send the message M to A, Then B calculates 
+		  C = M e (mod n) and transmits C. On receipt of this ciphertext, user A decrypts by calculating M = C d (mod n)
+		  1) select two random prime numbers, p = 17 and q = 11
+		  2) calculate n = p*q => 187
+		  3) Caclculate phi(n) = (p - 1)(q - 1) = 16*10 = 160
+		  4) Select e such that e is relatively prime to phi(n) = 160 and less than phi(n), we choose e = 7
+		  5) determine d such that de mod 160 = 1 and d < 160, correct value is d = 23 because 23 * 7 = 161 meaning (1 * 160) + 1
+		- results with public key PU = {7, 187} and PR = {23, 187}
+	- Security of RSA: 
+		- Brute Force: involves trying all the possible private keys 
+		- Mathematical attack: there are several approaches, all equivalent in effort to factoring the product of two primes
+		- Timing attacks: Depend on the running time of the decryption algorithm
+		- Chosen ciphertext attacks: exploits properties of RSA algorithm. 
+		- we want a large d value but that means our system will run slower, so there is a trade off 
+HERE	- The Factoring Problem: 
+		
+- Diffie-Hellman and Other Assymetric Algorithms:
