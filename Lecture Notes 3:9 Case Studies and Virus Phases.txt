@@ -1,0 +1,64 @@
+Lecture Notes: 
+	- write a config file for DOSBox
+	- Pitch of unix would serve as an automatic telephone switching service 
+	- Case Studies: 
+		- Elk Cloner: 
+			- Designed in 82 by Richard Skrenta as a prank for his friends
+			- first example of a boot sector virus
+				- virus infected floppy disks and would execute on the 50th run of a disk and would show a poem 
+				- overwrote boot sector of floppy disks, but otherwise harmless to computer and disks could be repaired
+				- wrote a small assembly program that used a small amount of bit space on the disk, 
+				  it would check a value to see if it were greater than 50 then it would display a message to the user 
+			- old information was stored and then used if they did not do a reset, so if you swapped a floppy disks it would still run the virus
+			- effect a pre OS image of our machines, runs before OS Kernel and has permissions to entire machine
+			-  we can validate the boot sector so that this does not happen 
+		- Brain Virus: 
+			- Created in 86 for IBM PC compatibles
+				- first PC virus and first boot sector virus that was released by a commercial distributor
+			- Intended to protect the authors' software from piracy, but ended up infecting computers which did not copy software
+			- authors' gave contact info in virus message for "vaccination" (mailed floppy disks to people)
+			- notable for creating the first effective boot sector virus that is easily modifiable
+			- a bit toggle determines if a disk is floppy or hard disk and would work given the correct conditions
+			- clones did not have this bit toggle, and if they bought software, it would either work always or never at all 
+		- Stoned Virus: 
+			- Shortly followed the Brain Virus as a harmful variant
+			- possibly one of the most copied viruses of all time
+			- simple premise: 
+				- while Brain virus intentionally did not infect hard disks by first checking the boot sector bit, Stoned (and variants) eliminated this check
+				- all disks had potential to be infected - even MBR
+			- Only way to eliminate Stoned was to overwrite modified sectors
+			- Later variants of Stoned had additional harmful payloads
+		- Michelangelo Virus:
+			- Technically a variant of Stoned
+				- notable for the hysteria that is causes in mass media 
+				- found in the wild in 91
+			- first malware that made general public aware of threat ("Michelangelo Madness")
+			- First example of a time-bomb virus
+				- Payload would wipe disks attached to the computer on Michelangelo's birthdays every calendar year
+			- recommendation was to not have your computer on March 6th 
+		- Virus Phases: 
+			- Dormant Phase: 
+				- Virus is idle and waiting for target
+				- not all viruses have a dormant phase
+			- Triggering Phase: 
+				- Virus is activated and can be caused by various number of events
+			- Propagation Phase: 
+				- virus spreads itself before carrying out payload (goal is deep infection of machines) 
+			- Execution Phase: 
+				- payload is delivered 
+			- polymorphic virus: a virus that will change itself as it continues to be in the system 
+		- Macro and Scripting Viruses:
+			- Very common in mid 90's 
+				- platform independent 
+				- infect documents (not executable portions of code)
+				- spread easily
+			- Exploit macro capability of MS Office applications
+				- modern anti-virus can typically handle these easily 
+		- Case Study: Love Letter Virus
+			- Probably closer to a worm than a virus
+			- Released into the wild on May 5, 2000
+			- Exploited auto-run vulnerability in .vbs scripting language 
+			- Virus/Worm propagated through email and relied on the recipient to open the email in MS Outlook 
+			- Once the email was viewed, the .vbs file would execute without prompting the user and infect their 
+			  machine along with replicating itself and emailing a copy of the malware to the user's contact list
+			- 
