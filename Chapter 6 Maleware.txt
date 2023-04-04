@@ -196,3 +196,85 @@ Maleware: A program that is inserted into a system, usually covertly, with the i
 			- Logic Bomb: code embedded in the malware that is set to explode when certain conditions are met
 			- once triggered the bomb may alter or delete data or entire files causing the machine to halt or do some damage
 	6.7 Payload - Attack Agent - Zombie, Bots
+		- Malware that subverts the computational and network resources of the infected system and secretly takes over another 
+		internet-attached computer then uses that computer to launch or manage attacks that are difficult to trace
+		- Botnet: Collection of bots often is capable of acting in a coordinated manner
+		Uses of Bots: 
+			- Distributed DDoS attacks: an attack on a computer system or network that causes a loss of service
+			- Spamming: sending massive amounts of bulk email 
+			- Sniffing Traffic: Packet sniffers may be used to watch for interesting clear-text data passing by a compromised machine
+			- Keylogging: captures keystrokes on the infected machine, an attacker can retrieve sensitive information
+			- Spreading new malware: Botnets are used to spread new bots, one with 10,000 hosts that acts as the start for a worm 
+			or mail virus allows very fast spreading and thus causes more harm
+			- Installing advertisement add-ons and browser helper objects (BHOs): Setting up a fake website for advertisements: 
+			the operator of this website negotiates a deal with the hosting companies that pay for clicks on ads, the clicks
+			can be "automated" so a few thousand bots click pop-ups and can be done through a compromised mahcine
+			- Attacking IRC chat networks: Internet Relay Chat networks, where the controller connects a large number of clones 
+			to the victims IRC network and is flooded with service requests, simialr to a DDoS attack
+			- Mainpulating online polls/games: Bots have different IP addresses and count as individual votes
+		Remote Control Facility: 
+			- A bot is controlled by some form of command-and-control (C&C) server network. 
+			- fast-flux DNS: where the address associated with a given server name is frequently changed, rotating over a large 
+			number of server proxies
+	Payload - Information Theft - Keyloggers, Phishing, Spyware:
+		Credential Theft, Keyloggers, and Spyware: 
+			- Keylogger: captures keystrokes on the infected machine to allow an attacker to monitor this sensitive information
+				- a filtering process is used to find key information
+			- Spyware: subvert the compromised machine to allow monitoring of a wide range of activity on the system 
+		Phishing and Identity Theft: 
+			- Phishing: exploits social engineering to leverage user's trust by masquerading as communications from a trusted 
+			source
+			- Spear-Phishing: an email claiming to be a trusted source, but contains malicious attachments disguised as fake 
+			invoices, office documents, or other expected content
+				- involves research and crafting an email that is user specific to entice them more 
+		Reconnaissance, Espionage, and Data Exfiltration: 
+			- Reconnaissance Payload: aims to obtain certain types of desired information and return to the attacker
+			- to detech and block data exfiltration requires suitable "data-loss" technical counter measures that manager either 
+			access to such information, or its transmission across the organization's network perimeter
+	Payload - Stealthing - Backdoors, Rootkids: 
+			Backdoors: 
+				- Trapdoor/ Backdoor: secret entry point into a program that allows someone who is aware of the backdoor 
+				to gain access without going through the usual security access procedures
+				- Maintenance Hook: when programmers use a backdoor to debug their programs
+				- Usually implemented as a network service listening on some non-standard port that the attacker can connect 
+				to and issue commands through 
+			Rootkit: 
+				- Set of programs installed on a system to maintain covert access to the system with dministrator (root)
+				privileges, while hiding evidence of its presence to the greatest extent possible 
+				Classifications: 
+					- Persistent: activates each time the system boots
+					- Memory Based: No persistent code and cannot survive a reboot, but is only in memory and hard find
+					- User Mode: intercepts calls to APIs and modifies returned results
+					- Kernel Mode: Can intercept calls to native APIs in kernel mode, and also hide the presence of a 
+					malware process by removing it from the kernel's list of active processes
+					- Virtual Machine Based: This type of rootkit installs a lightweight virtual machine monitor, then 
+					runs the operating system in a virtual machine above it, and transparently intercepts and modifies
+					states and events 
+					- External Mode: Outside the normal operation mode of the targeted system, in BIOS or system 
+					management mode
+				Kernel Mode Rootkits: 
+					- System calls are a primary target of kernel-level rootkits to acheive concealment
+					- 3 Techniques to change system calls: 
+						1) Modify the system call table: attacker modifies selected syscall addresses stored in the system 
+						call table, enabling the rootkit to direct a system call away from a legitimate routine to the 
+						rootkit's replacement
+						2) Modifying system call table targets: Attacker overwrites selected legitimate system call 
+						routines with malicious code
+						3) Redirect the system call table: The attacker redirects references to the entire system call table
+						to a new table in a new kernel memory location
+				Virtual machine and Other External Rootkits: 
+					- Uses a rogue or compromised virtual machine monitor or hypervisor, often aided by the hardware 
+					virtualization support and runs entirely below the visibility of even kernel code in the target OS
+					- System Management Mode (SSM): used for low-level hardware control, or BIOS code used when 
+					the processor first boots, and is generally invisibile to code running on the outside of these modes
+	Countermeasures: 
+		Malware Countermeasure Approaches: 
+			- Four main preventions: 
+				1) Policy
+				2) Awareness
+				3) Vulnerability mitigation 
+				4) Threat Mitigation
+					- Detection: once the infection has occurred, determine that it has occurred and locate the malware
+					- Identification: once detection has been achieved, identify the specific malware 
+					- Removal: remove all traces of malware virus from all infected systems 
+			- Effective Counter-measures: 
