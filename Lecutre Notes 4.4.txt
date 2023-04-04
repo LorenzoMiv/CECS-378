@@ -1,0 +1,40 @@
+Lecture Notes: 
+- Tanenbaum: Operating systems design and implementation shows real examples of the OS 
+- Replay attack: is a form of network attack in which valid data transmission is maliciously or fraudulently repeated or delayed
+- Linus experienced a Spear phishing attack because it was targeted at them specifically 
+	- would be classified as a trojan horse 
+	- payload was credential stealing (confidentiality)
+	- DDoS attack because it was denying the YouTube channel (availability)
+	- there is a vulnerability in session tokens because google does not look at the whereabouts the access is coming from, as long as the session key is valid 
+		- session tokens have an authentication key and the webpage uses RSA encryption to verify, so once it gets checked if it is the same session the same key is used
+	- The attack time was probably planned as well and done at night because it was difficult to react to the process 
+	- Padding can be used to hide things within a file allows the file to pass the byte inspection making the file size like the original file size that would normally be downloaded 
+
+DDoS: 
+Ended with simple DDoS attacks: 
+	- Flood attack: attempts to take up system resources 
+		- Load average is fluctuating and gives a ratio to determine how long things will take to get done, if the number is large the system will start to be effected 
+		- attempts to drive up system load, pings are sent back and the cpu is dedicated to the response, meaning the cpu gets bottlenecked
+	- Spoofing attack: doesn't attempt to take up resources, but is taking up TCP connection states 
+		- only a finite of possible connections a computer can make and dependent on bandwidth, this seeks to grab the connection and hold onto it blocking the connection 
+- Distributed Denial of Service Attacks 
+	- Typically use multiple systems (zombies) to generate attacks
+	- Attacker attempts to find flaws in OS or common applications to gain access to target machine and install their own software
+	- When a lot of machines become compromised by the attacker, a botnet is created and controlled attacks can begin
+		- much harder to determine where the attack is coming from when a botnet is used
+		- protects the attacker because they are able to layer themselves with the zombie, like a tree, the attacker is the root, zombies are the layers below them 
+HTTP-Based Attacks:
+	- HTTP floods: 
+		- Attack which bombards http servers with requests
+		- attempts to consume all of the resources on the target server
+		- can also be done by spidering 
+			- bots start at a common URL and then follow all links on the target recursively to consume resources  
+			- all zombies would get this link and attempt to resolve the http address, which overloads the server, causing it to shut down 
+		- essentially overloaded with requests
+	- Slowloris: 
+		- Attempts to monopolize a http server by sending incomplete requests
+		- Eventually, the web server will spend all of its resources attempting to keep those connections alive waiting for additional requests 
+		- TCP connections remain around longer so that they don't have to continually get credentials
+			- if the TCP doesn't hear back from the computer trying to connect, it will terminate after a specific time
+			- if the connection waits for 60 seconds, and the slowloris finds out the time it may send a packet every 59 seconds to tie up the line 
+	- You cannot tell if a DDoS attack is happening for sure, "reddit hug of death" - some social media network links to some small website that can't handle the traffic  

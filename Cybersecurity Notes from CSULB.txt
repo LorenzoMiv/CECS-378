@@ -1,0 +1,24 @@
+- Good to have certifications to become more marketable
+- when working in the government sector you are wearing a lot of hats, whereas in private you are doing a specific job
+- typical workflow of an entry level role: 
+	- depends, could be specialized
+	- risk assessments
+	- incident response roles, sock? Roles
+	- network engineer
+- respect ideas
+- think about the big picture but dont let it get out of control with the what ifs 
+
+Skills that are sought after:
+- Passionate
+- want to learn
+- some type of background or experience 
+- security plus, or A plus (certifications) 
+
+Do you have any personal project recommendations, or what should we familiarize ourself with in the current climate of cybersecurity?
+Build own hacking lab, at home pen testing
+
+Are there any specific areas of focus for entering cybersecurity in the banking sector? 
+
+
+
+
